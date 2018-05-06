@@ -623,3 +623,7 @@ textarea {
   width: 250px;
   display: block;
 }
+
+#comback {
+  background: #333333;
+}

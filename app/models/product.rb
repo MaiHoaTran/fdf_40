@@ -6,7 +6,7 @@ class Product < ApplicationRecord
   validates :name, presence: true
   validates :description, presence: true
   validates :price, presence: true,
-    numericality: {greater_than_or_equal_to: 0, less_than: 1_000_000}
+    numericality: {greater_than_or_equal_to: Settings.product.price_min, less_than: Settings.product.price_max}
 
   scope :by_name, ->(name){where name: name}
   scope :by_id_not_match, ->(id){where.not id: id}
