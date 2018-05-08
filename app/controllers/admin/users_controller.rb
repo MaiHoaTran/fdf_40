@@ -4,7 +4,7 @@ module Admin
 
     before_action :logged_in_user
     before_action :load_user, except: %i(index new create)
-    before_action :admin_user, only: %i(edit update destroy)
+    before_action :admin_user, only: %i(update destroy)
 
     def index
       @users = User.all.paginate page: params[:page], per_page: Settings.admin.number_items_per_page

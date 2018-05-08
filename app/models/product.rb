@@ -10,6 +10,7 @@ class Product < ApplicationRecord
                    greater_than_or_equal_to: Settings.admin.product.price_min}
 
   scope :by_name, ->(name){where name: name}
+  scope :by_category_id, ->(category_id){where("category_id IN (?)", Category.find_by(id: category_id).branch_ids)}
   scope :by_id_not_match, ->(id){where.not id: id}
   default_scope ->{order(created_at: :desc)}
 

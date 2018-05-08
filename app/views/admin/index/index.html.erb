@@ -1,6 +1,6 @@
 <%= provide :title, t(".title") %>
 <ol class="breadcrumb">
-  <li class="breadcrumb-item active"><%= link_to t(".title"), admin_orders_path %></li>
+  <li class="breadcrumb-item active"><%= t ".title" %></li>
 </ol>
 <div class="card mb-3">
   <div class="card-body">
@@ -9,15 +9,13 @@
         <thead>
           <tr>
             <th><%= t ".id" %></th>
-            <th><%= t ".date_order" %></th>
-            <th><%= t ".status" %></th>
-            <th><%= t ".user" %></th>
-            <th><%= t ".total_price" %></th>
+            <th><%= t ".name" %></th>
+            <th><%= t ".price" %></th>
+            <th><%= t ".quantity" %></th>
             <th class="function1"><%= t "admin.categories.index.function" %></th>
           </tr>
         </thead>
         <tbody>
-          <%= render @orders %>
         </tbody>
       </table>
       <%= will_paginate %>

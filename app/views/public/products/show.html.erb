@@ -1,0 +1,42 @@
+<div class="blog" style="padding-top: 6em;" >
+  <div class="container">
+    <div class="agile-blog-grids">
+      <div class="col-md-6 agile-blog-grid-right" id="agile-blog-grid-right">
+        <div class="agile-blog-grid">
+
+          <div class="opinion">
+            <h3> <%= t "public.static_pages.comment" %> </h3>
+            <form action="#" method="post">
+              <input type="text" name="Name" placeholder="Chu de">
+              <textarea name="Noi dung" placeholder="Noi dung" required=""></textarea>
+              <input type="submit" value="SEND">
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="blog-left-grids col-md-6">
+        <div class="agile-blog-grid-left-img">
+          <%= image_tag @product.image.url if @product.image? %>
+        </div>
+        <div class="blog-left-right">
+          <div class="blog-left-right-top">
+            <h4> <%= @product.name %> </h4>
+          </div>
+          <div class="blog-left-right-bottom">
+            <p> <%=@product.description%> </p>
+            <%= form_for(@order_item, url: public_add_cart_path, remote: true) do |f| %>
+              <div class="input-group ">
+                <%= f.number_field :quantity, value: 1, class: "form-control ", min: 1 %> <br>
+                <%= f.hidden_field :product_id, value: @product.id %>
+                <div class="input-group-btn">
+                  <%= f.submit t("public.products.index.add_to_cart"), class: "btn btn-danger" %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div style="clear: left;"> </div>
+      </div>
+  </div>
+</div>
+</div>

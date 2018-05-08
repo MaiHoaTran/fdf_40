@@ -1,5 +1,5 @@
 module Admin
-  class OrdersController < ApplicationController
+  class IndexController < ApplicationController
     layout "admin/application"
 
     before_action :load_order, except: :index

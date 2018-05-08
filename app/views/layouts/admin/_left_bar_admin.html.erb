@@ -8,6 +8,9 @@
       <li class="nav-item" data-toggle="tooltip" data-placement="right">
         <%= link_to sanitize("<i class='fa fa-user-circle'></i> " + content_tag(:span, t(".profile"), class: "nav-link-text")), admin_user_url(current_user), class: "nav-link" %>
       </li>
+      <li class="nav-item" data-toggle="tooltip" data-placement="right">
+        <%= link_to sanitize("<i class='fa fa-snowflake-o'></i> " + content_tag(:span, t(".your_order"), class: "nav-link-text")), "", class: "nav-link" %>
+      </li>
       <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
         <%= link_to sanitize("<i class='fa fa-users'></i> " + content_tag(:span, t(".users"), class: "nav-link-text")), admin_users_path, class: "nav-link" %>
       </li>

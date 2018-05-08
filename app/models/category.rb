@@ -10,4 +10,18 @@ class Category < ApplicationRecord
   scope :by_parent_id_not_match_id, ->(id){where("parent <> :id or parent IS NULL", id: id)}
   scope :by_name, ->(name){where name: name}
   scope :by_id_not_match, ->(id){where.not id: id}
+
+  def descendants
+    subcategories.inject(subcategories) do |all, subcat|
+      all + subcat.descendants
+    end
+  end
+
+  def self_and_descendants
+    [self] + descendants
+  end
+
+  def branch_ids
+    self_and_descendants.map(&:id).uniq
+  end
 end
