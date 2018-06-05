@@ -29,7 +29,7 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <%= link_to sanitize("<i class='fa fa-fw fa-sign-out'></i>" + t(".logout")), authentication_logout_path, method: :delete, class: "nav-link", data: {confirm: t("authentication.sessions.logout.confirm")} %>
+        <%= link_to sanitize("<i class='fa fa-fw fa-sign-out'></i>" + t(".logout")), destroy_user_session_path, method: :delete, class: "nav-link", data: {confirm: t("authentication.sessions.logout.confirm")} %>
       </li>
     </ul>
   </div>

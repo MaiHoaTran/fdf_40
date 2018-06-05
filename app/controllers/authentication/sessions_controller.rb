@@ -1,24 +1,20 @@
 module Authentication
-  class SessionsController < ApplicationController
+  class SessionsController < Devise::SessionsController
     layout "authentication/application"
+    before_action :configure_sign_in_params, only: %i(create)
 
-    def new; end
+    private
 
-    def create
-      user = User.find_by email: params[:session][:email].downcase
-      if user && password_authenticate?(user)
-        log_in user
-        params[:session][:remember_me] == Settings.authentication.session.remember ? remember(user) : forget(user)
-        redirect_to public_root_url
-      else
-        @message = t "authentication.sessions.new.error_messages"
-        render :new
-      end
+    def configure_sign_in_params
+      devise_parameter_sanitizer.permit(:sign_in, keys: %i(email password))
     end
 
-    def destroy
-      log_out if logged_in?
-      redirect_to authentication_login_path
+    def after_sign_up_path_for resource
+      signed_in_root_path(resource)
+    end
+
+    def after_sign_out_path_for _resource_or_scope
+      new_user_session_path
     end
   end
 end

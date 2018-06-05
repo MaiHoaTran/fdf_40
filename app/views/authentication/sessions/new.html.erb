@@ -1,7 +1,7 @@
 <%= provide :title, t(".title") %>
 <div class="card-header"><%= t ".title" %></div>
 <div class="card-body">
-  <%= form_for(:session, url: authentication_login_path) do |f| %>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="form-group">
       <%= f.label :email %>
       <%= f.email_field :email, class: "form-control" %>
@@ -20,7 +20,6 @@
     <%= f.submit t(".title"), class: "btn btn-primary btn-block" %>
   <% end %>
   <div class="text-center">
-    <%= link_to t(".register"), authentication_signup_path, class: "d-block small mt-3" %>
-    <%= link_to t(".forgot_password"), "", class: "d-block small" %>
+    <%= render "devise/shared/links" %>
   </div>
 </div>
