@@ -28,6 +28,7 @@ gem "turbolinks", "~> 5"
 gem "jbuilder", "~> 2.5"
 gem "rubocop", require: false
 gem "i18n-js"
+gem "devise"
 # gem 'font-awesome-sass', '~> 5.0.9'
 group :development, :test do
   gem "selenium-webdriver"

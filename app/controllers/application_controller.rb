@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  include Authentication::SessionsHelper
   helper_method :load_product
 
   def load_product product_id
@@ -7,12 +6,6 @@ class ApplicationController < ActionController::Base
   end
 
   private
-
-  def logged_in_user
-    return if logged_in?
-    flash[:danger] = t "authentication.sessions.message_not_login"
-    redirect_to authentication_login_url
-  end
 
   def admin_user
     return if admin_user?

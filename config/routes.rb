@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  root "public/static_pages#home"
+
+  devise_for :users, path: "", controllers: {
+    sessions: "authentication/sessions",
+    registrations: "authentication/registrations"
+  }
+
   namespace :authentication do
     get "/login", to: "sessions#new"
     post "/login", to: "sessions#create"

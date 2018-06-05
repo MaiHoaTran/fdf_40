@@ -3,7 +3,7 @@ module Admin
     layout "admin/application"
     include CategoriesHelper
 
-    before_action :logged_in_user
+    before_action :authenticate_user!
     before_action :load_category, except: %i(index new create)
     before_action :load_categories, only: %i(index)
     before_action :load_category_parent_cat_add, only: %i(new create)

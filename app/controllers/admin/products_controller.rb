@@ -2,7 +2,7 @@ module Admin
   class ProductsController < ApplicationController
     layout "admin/application"
 
-    before_action :logged_in_user
+    before_action :authenticate_user!
     before_action :load_product, except: %i(index new create search)
     before_action :load_categories
     before_action :admin_user, only: %i(edit update destroy)

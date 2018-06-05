@@ -2,9 +2,9 @@ module Admin
   class UsersController < ApplicationController
     layout "admin/application"
 
-    before_action :logged_in_user
+    before_action :authenticate_user!
     before_action :load_user, except: %i(index new create search)
-    before_action :admin_user, only: %i(update destroy)
+    before_action :check_user_admin_or_self, only: %i(update destroy)
 
     def index
       @users = User.all.paginate page: params[:page], per_page: Settings.admin.number_items_per_page
@@ -58,6 +58,12 @@ module Admin
       @user = User.find_by id: params[:id]
       return if @user.present?
       flash[:danger] = t "admin.users.index.not_find_user"
+      redirect_to admin_users_url
+    end
+
+    def check_user_admin_or_self
+      return if current_user.admin? || current_user.id == @user.id
+      flash[:danger] = t "admin.users.index.not_admin"
       redirect_to admin_users_url
     end
   end
