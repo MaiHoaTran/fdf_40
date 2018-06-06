@@ -48,8 +48,12 @@
             <% end %>
           </td>
           <td class="function">
-            <%= link_to image_tag("edit.jpg", alt: t(".edit")), edit_admin_product_path(product) %> |
-            <%= link_to image_tag("delete.jpg", alt: t(".delete")), admin_product_path(product), method: :delete, data: {confirm: t(".confirm_delete")} %>
+            <% if can? :update, product %>
+              <%= link_to image_tag("edit.jpg", alt: t(".edit")), edit_admin_product_path(product) %> |
+            <% end %>
+            <% if can? :destroy, product %>
+              <%= link_to image_tag("delete.jpg", alt: t(".delete")), admin_product_path(product), method: :delete, data: {confirm: t(".confirm_delete")} %>
+            <% end %>
           </td>
         </tr>
         <%
@@ -60,4 +64,3 @@
     </div>
   </div>
 </div>
-

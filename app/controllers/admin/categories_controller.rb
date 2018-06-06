@@ -1,14 +1,17 @@
 module Admin
-  class CategoriesController < ApplicationController
-    layout "admin/application"
+  class CategoriesController < AdminController
     include CategoriesHelper
 
-    before_action :authenticate_user!
-    before_action :load_category, except: %i(index new create)
+    rescue_from ActiveRecord::RecordNotFound do |exception|
+      respond_to do |format|
+        format.html{redirect_to admin_categories_path, alert: exception.message}
+      end
+    end
+
+    load_and_authorize_resource param_method: :category_params
     before_action :load_categories, only: %i(index)
     before_action :load_category_parent_cat_add, only: %i(new create)
     before_action :load_categories_by_not_match_id_and_parent_id, only: %i(edit update show)
-    before_action :admin_user, only: %i(edit update destroy)
 
     def index; end
 
@@ -21,7 +24,6 @@ module Admin
     end
 
     def create
-      @category = Category.new category_params
       if Category.by_name(@category.name).blank?
         save_cat @category
       else
@@ -60,13 +62,6 @@ module Admin
     def load_categories_by_not_match_id_and_parent_id
       @categories = @category.load_cat_parent
       @categories = load_categories_add_no_parent @categories
-    end
-
-    def load_category
-      @category = Category.find_by id: params[:id]
-      return if @category.present?
-      flash[:danger] = t "admin.categories.index.not_find_cat"
-      redirect_to admin_categories_url
     end
 
     def load_categories

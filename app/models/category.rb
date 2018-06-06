@@ -12,7 +12,7 @@ class Category < ApplicationRecord
   scope :by_id_not_match, ->(id){where.not id: id}
 
   def descendants
-    subcategories.inject(subcategories) do |all, subcat|
+    subcategories.reduce(subcategories) do |all, subcat|
       all + subcat.descendants
     end
   end

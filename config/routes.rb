@@ -1,3 +1,4 @@
+
 Rails.application.routes.draw do
   root "public/static_pages#home"
 
