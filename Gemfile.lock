@@ -152,6 +152,8 @@ GEM
     parallel (1.12.1)
     parser (2.5.1.0)
       ast (~> 2.4.0)
+    polyamorous (1.3.3)
+      activerecord (>= 3.0)
     powerpack (0.1.1)
     puma (3.11.4)
     rack (2.0.5)
@@ -186,6 +188,12 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (3.0.0)
     rake (12.3.1)
+    ransack (1.8.8)
+      actionpack (>= 3.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      i18n
+      polyamorous (~> 1.3.2)
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -270,6 +278,7 @@ DEPENDENCIES
   puma (~> 3.7)
   rails (~> 5.1.6)
   rails-controller-testing
+  ransack
   rubocop
   sass-rails (~> 5.0)
   selenium-webdriver
@@ -281,4 +290,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-1.16.1
+   1.16.1

@@ -23,7 +23,7 @@ module Public
         flash[:success] = t "public.orders.success"
         status = 1
       end
-      flash[:danger] = t "public.orders.fail" if @status == 0
+      flash[:danger] = t "public.orders.fail" if status == 0
       redirect_to public_cart_path
     end
   end

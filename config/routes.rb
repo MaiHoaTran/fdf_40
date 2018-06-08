@@ -1,4 +1,3 @@
-
 Rails.application.routes.draw do
   root "public/static_pages#home"
 
@@ -22,7 +21,6 @@ Rails.application.routes.draw do
     resources :orders
     resources :order_details, only: :show
     resources :comments, only: [:index, :destroy]
-    post "/products/search/", to: "products#search"
     get "/myorder", to: "orders#user_order"
   end
 

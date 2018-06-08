@@ -24,6 +24,7 @@ gem "mysql2", ">= 0.3.18", "< 0.6.0"
 gem "puma", "~> 3.7"
 gem "rails", "~> 5.1.6"
 gem "rails-controller-testing"
+gem "ransack"
 gem "rubocop", require: false
 gem "sass-rails", "~> 5.0"
 gem "turbolinks", "~> 5"
