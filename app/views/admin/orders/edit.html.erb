@@ -37,9 +37,11 @@
         <div class="btn-group mr-2">
           <%= link_to t(".comeback"), admin_orders_path, class: "btn btn-primary", id: "comback" %>
         </div>
-        <div class="btn-group">
-          <%= f.submit t(".submit"), class: "btn btn-primary" %>
-        </div>
+        <% if can? :update, @order %>
+          <div class="btn-group">
+            <%= f.submit t(".submit"), class: "btn btn-primary" %>
+          </div>
+        <% end %>
       </div>
     <% end %>
     <div class="table-responsive">
