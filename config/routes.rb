@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+
+  require "sidekiq/web"
+  mount Sidekiq::Web => "/sidekiq"
+
   root "public/static_pages#home"
 
   devise_for :users, path: "", controllers: {

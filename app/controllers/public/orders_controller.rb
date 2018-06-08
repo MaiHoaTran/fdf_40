@@ -19,11 +19,11 @@ module Public
         session[:total] = 0
         session[:order_items] = []
         order_details = OrderDetail.by_order_id order.id
-        OrderMailer.result_order(current_user, order, order_details).deliver_now
+        ReportOrderWorker.perform_async current_user.to_json, order.to_json, order_details.to_json
         flash[:success] = t "public.orders.success"
         status = 1
       end
-      flash[:danger] = t "public.orders.fail" if status == 0
+      flash[:danger] = t "public.orders.fail" if status.zero?
       redirect_to public_cart_path
     end
   end

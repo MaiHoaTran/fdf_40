@@ -27,6 +27,7 @@ gem "rails-controller-testing"
 gem "ransack"
 gem "rubocop", require: false
 gem "sass-rails", "~> 5.0"
+gem "sidekiq"
 gem "turbolinks", "~> 5"
 gem "uglifier", ">= 1.3.0"
 gem "will_paginate"
