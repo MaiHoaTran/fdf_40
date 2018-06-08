@@ -1,13 +1,14 @@
 module Admin
-  class UsersController < ApplicationController
-    layout "admin/application"
-
-    before_action :authenticate_user!
-    before_action :load_user, except: %i(index new create search)
-    before_action :check_user_admin_or_self, only: %i(update destroy)
+  class UsersController < AdminController
+    rescue_from ActiveRecord::RecordNotFound do |exception|
+      respond_to do |format|
+        format.html{redirect_to admin_users_path, alert: exception.message}
+      end
+    end
+    load_and_authorize_resource param_method: :user_params
 
     def index
-      @users = User.all.paginate page: params[:page], per_page: Settings.admin.number_items_per_page
+      @users = User.all.paginate(page: params[:page], per_page: Settings.admin.number_items_per_page)
     end
 
     def new
@@ -19,7 +20,6 @@ module Admin
     end
 
     def create
-      @user = User.new user_params
       if @user.save
         flash[:success] = t "admin.users.new.success_add_msg"
         redirect_to admin_users_url
@@ -51,20 +51,8 @@ module Admin
     private
 
     def user_params
-      params.require(:user).permit :full_name, :email, :password, :password_confirmation, :phone, :address, :sex, :role
-    end
-
-    def load_user
-      @user = User.find_by id: params[:id]
-      return if @user.present?
-      flash[:danger] = t "admin.users.index.not_find_user"
-      redirect_to admin_users_url
-    end
-
-    def check_user_admin_or_self
-      return if current_user.admin? || current_user.id == @user.id
-      flash[:danger] = t "admin.users.index.not_admin"
-      redirect_to admin_users_url
+      params.require(:user).permit(:full_name, :email, :password,
+        :password_confirmation, :phone, :address, :sex)
     end
   end
 end

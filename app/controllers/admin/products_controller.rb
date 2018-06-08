@@ -1,29 +1,24 @@
 module Admin
-  class ProductsController < ApplicationController
-    layout "admin/application"
+  class ProductsController < AdminController
+    include CategoriesHelper
+    rescue_from ActiveRecord::RecordNotFound do |exception|
+      respond_to do |format|
+        format.html{redirect_to admin_products_path, alert: exception.message}
+      end
+    end
 
-    before_action :authenticate_user!
-    before_action :load_product, except: %i(index new create search)
-    before_action :load_categories
-    before_action :admin_user, only: %i(edit update destroy)
+    load_and_authorize_resource param_method: :product_params
+    before_action :load_categories_to_search
 
     def index
-      @products = Product.all.paginate page: params[:page], per_page: Settings.admin.number_items_per_page
+      @search = Product.ransack(params[:q])
+      @products = @search.result(distinct: true).paginate(page: params[:page],
+        per_page: Settings.admin.number_items_per_page)
     end
 
-    def search
-      information = params[:search][:information]
-      cat_id = params[:search][:cat_id]
-      @products = Product.search_by_name(information).by_category_id(cat_id).paginate page: params[:page], per_page: Settings.admin.number_items_per_page
-      render :index
-    end
-
-    def new
-      @product = Product.new
-    end
+    def new; end
 
     def create
-      @product = Product.new product_params
       if Product.by_name(@product.name).blank?
         save_product @product
       else
@@ -64,15 +59,8 @@ module Admin
       params.require(:product).permit :name, :price, :image, :description, :category_id
     end
 
-    def load_categories
+    def load_categories_to_search
       @categories = Category.all
-    end
-
-    def load_product
-      @product = Product.find_by id: params[:id]
-      return if @product.present?
-      flash[:danger] = t "admin.products.index.not_find_product"
-      redirect_to admin_products_url
     end
 
     def save_product add_product

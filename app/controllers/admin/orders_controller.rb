@@ -1,12 +1,16 @@
 module Admin
-  class OrdersController < ApplicationController
-    layout "admin/application"
+  class OrdersController < AdminController
+    rescue_from ActiveRecord::RecordNotFound do |exception|
+      respond_to do |format|
+        format.html{redirect_to admin_orders_path, alert: exception.message}
+      end
+    end
 
-    before_action :load_order, except: :index
+    load_and_authorize_resource param_method: :order_params
     before_action :load_order_details, except: %i(index destroy)
 
     def index
-      @orders = Order.all.paginate page: params[:page], per_page: Settings.admin.number_items_per_page
+      @orders = Order.all.paginate(page: params[:page], per_page: Settings.admin.number_items_per_page)
     end
 
     def edit; end
@@ -34,17 +38,14 @@ module Admin
     end
 
     def user_order
-      @orders = Order.by_user(current_user.id).paginate page: params[:page], per_page: Settings.admin.number_items_per_page
+      @orders = Order.by_user(current_user.id).paginate page: params[:page],
+        per_page: Settings.admin.number_items_per_page
     end
 
     private
 
     def order_params
       params.require(:order).permit :status
-    end
-
-    def load_order
-      @order = Order.find_by id: params[:id]
     end
 
     def load_order_details

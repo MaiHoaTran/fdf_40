@@ -7,14 +7,14 @@
 </ol>
 <div class="card mb-3">
   <div class="card-body">
-    <%= form_for :search, url: admin_products_search_path, method: :post do |f| %>
+    <%= search_form_for @search, url: admin_products_path do |f| %>
       <div class="form-group">
         <div class="form-row">
           <div class="col-md-5">
-            <%= f.select :cat_id, options_for_select(display_categories_parent_form) %>
+            <%= f.select :category_id_eq, options_for_select(display_categories_parent_form), {prompt: t("admin.products.search.category_selected")} %>
           </div>
           <div class="col-md-5">
-            <%= f.text_field :information, placeholder: "Enter name product ... " %>
+            <%= f.text_field :name_cont, placeholder: t("admin.products.search.search_product_name") %>
           </div>
           <div class="col-md-2">
             <%= f.submit "Search" %>
@@ -25,10 +25,10 @@
     <div class="table-responsive">
       <table class="table table-bordered" id="table_product" width="100%" cellspacing="0">
         <tr>
-          <th><%= t ".id" %></th>
-          <th><%= t ".name" %></th>
-          <th><%= t ".cat_name" %></th>
-          <th><%= t ".price" %></th>
+          <th><%= sort_link @search, :id, t(".id") %></th>
+          <th><%= sort_link @search, :name, t(".name") %></th>
+          <th><%= sort_link @search, :cat_name, t(".cat_name") %></th>
+          <th><%= sort_link @search, :price, t(".price") %></th>
           <th class="image"><%= t ".image" %></th>
           <th class="function"><%= t ".function" %></th>
         </tr>
@@ -48,8 +48,12 @@
             <% end %>
           </td>
           <td class="function">
-            <%= link_to image_tag("edit.jpg", alt: t(".edit")), edit_admin_product_path(product) %> |
-            <%= link_to image_tag("delete.jpg", alt: t(".delete")), admin_product_path(product), method: :delete, data: {confirm: t(".confirm_delete")} %>
+            <% if can? :update, product %>
+              <%= link_to image_tag("edit.jpg", alt: t(".edit")), edit_admin_product_path(product) %> |
+            <% end %>
+            <% if can? :destroy, product %>
+              <%= link_to image_tag("delete.jpg", alt: t(".delete")), admin_product_path(product), method: :delete, data: {confirm: t(".confirm_delete")} %>
+            <% end %>
           </td>
         </tr>
         <%
@@ -60,4 +64,3 @@
     </div>
   </div>
 </div>
-
